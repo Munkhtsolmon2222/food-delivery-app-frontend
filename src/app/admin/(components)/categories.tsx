@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 interface Category {
   _id: string;
@@ -84,11 +85,16 @@ export function Categories() {
           <h1 className="p-2 font-medium text-[16px]">All dishes</h1>
         </Badge>
         {categories?.map((category) => (
-          <Badge key={category._id} variant="outline" className="mr-2">
-            <h1 className="p-2 font-medium text-[16px]">
-              {category.categoryName}
-            </h1>
-          </Badge>
+          <Link
+            key={category._id}
+            href={`/admin/food-category/${category._id}`}
+          >
+            <Badge key={category._id} variant="outline" className="mr-2 mt-2">
+              <h1 className="p-2 font-medium text-[16px]">
+                {category.categoryName}
+              </h1>
+            </Badge>
+          </Link>
         ))}
         <Dialog>
           <DialogTrigger>
