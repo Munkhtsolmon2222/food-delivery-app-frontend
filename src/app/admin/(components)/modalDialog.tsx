@@ -12,38 +12,45 @@ import { DialogClose } from "@radix-ui/react-dialog";
 import { useState } from "react";
 import Dropzone from "react-dropzone";
 
-export const ModalDialog = ({ category }: any) => {
-  const [value, setValue] = useState<string>();
-  const foodValues = {
-    foodName: String,
-    price: Number,
-    image: String,
-    ingredients: String,
-  };
+export const ModalDialog = ({ category, setDishData, paramsId, dish }: any) => {
   const [imagePreview, setImagePreview] = useState(null);
-  const [data, setData] = useState<any>(foodValues);
-  const handleUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files.length > 0) {
-      const file = event.target.files[0];
+  const [foodName, setFoodName] = useState<String>();
+  const [foodPrice, setFoodPrice] = useState<Number>();
+  const [foodIMG, setFoodIMG] = useState<String>();
+  const [foodIngredients, setFoodIngredients] = useState<String>();
+
+  const handleUpload = async (event: any) => {
+    if (event) {
       const data = new FormData();
-      data.append("file", file);
-      data.append("upload_preset", "food-delivery");
+      data.append("file", event);
+      data.append("upload_preset", "FD-app-images");
       const response = await fetch(
-        `https://api.cloudinary.com/v1_1/${UPLOAD_PRESET}/upload`,
-        { method: "POST", body: data }
+        `https://api.cloudinary.com/v1_1/dv7ytfkgc/upload`,
+        {
+          method: "POST",
+          body: data,
+        }
       );
       const dataJson = await response.json();
-      setFood((prev) => ({ ...prev, image: dataJson.secure_url }));
+      setFoodIMG(dataJson.secure_url);
     }
   };
-
-  const addCategory = async (value: any) => {
-    if (!value) return;
-
+  const addCategory = async (
+    foodName: any,
+    foodPrice: any,
+    foodIMG: any,
+    foodIngredients: any
+  ) => {
     try {
       const response = await fetch("http://localhost:4000/food/", {
         method: "POST",
-        body: JSON.stringify({ categoryName: value }),
+        body: JSON.stringify({
+          foodName,
+          foodPrice,
+          foodIMG,
+          foodIngredients,
+          paramsId,
+        }),
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
@@ -53,22 +60,15 @@ export const ModalDialog = ({ category }: any) => {
       if (!response.ok) throw new Error("Failed to add dish");
 
       const data = await response.json();
-      setData((prevDish: any) => [
-        ...prevDish,
-        {
-          _id: data._id,
-          foodName: data.foodName,
-          price: data.price,
-          image: data.image,
-          ingredients: data.ingredients,
-        },
-      ]);
+      setDishData([...dish, data.newFood]);
     } catch (error) {
       console.error(error);
     }
   };
 
   const handleDrop = (acceptedFiles: any) => {
+    console.log(acceptedFiles[0]);
+    setFoodIMG(acceptedFiles[0].name);
     const file = acceptedFiles[0];
     console.log(file);
     if (!file) return;
@@ -78,11 +78,17 @@ export const ModalDialog = ({ category }: any) => {
       setImagePreview(previewUrl);
       console.log(previewUrl);
     }
+    handleUpload(acceptedFiles);
   };
-  const handleChanger = (e: any) => {
-    setValue(e.target.value);
+  const handleChangerFoodName = (e: any) => {
+    setFoodName(e.target.value);
   };
-  console.log(category);
+  const handleChangerFoodPrice = (e: any) => {
+    setFoodPrice(e.target.value);
+  };
+  const handleChangerFoodIngredients = (e: any) => {
+    setFoodIngredients(e.target.value);
+  };
   return (
     <Dialog>
       <DialogTrigger>
@@ -109,7 +115,7 @@ export const ModalDialog = ({ category }: any) => {
             <h1>Food name</h1>
             <Input
               className="border-1px rounded-md h-[40px] w-[200px]"
-              onChange={handleChanger}
+              onChange={handleChangerFoodName}
               placeholder="Type food name..."
             />
           </div>
@@ -117,7 +123,7 @@ export const ModalDialog = ({ category }: any) => {
             <h1>Food price</h1>
             <Input
               className="border-1px rounded-md h-[40px] w-[200px]"
-              onChange={handleChanger}
+              onChange={handleChangerFoodPrice}
               placeholder="Food price..."
             />
           </div>
@@ -126,7 +132,7 @@ export const ModalDialog = ({ category }: any) => {
           <p>Ingredients</p>
           <Input
             className="border-1px rounded-md h-[70px] w-[400px]"
-            onChange={handleChanger}
+            onChange={handleChangerFoodIngredients}
             placeholder="List ingredients..."
           />
         </div>
@@ -173,7 +179,7 @@ export const ModalDialog = ({ category }: any) => {
         <DialogClose asChild>
           <Button
             onClick={() => {
-              addCategory(value);
+              addCategory(foodName, foodPrice, foodIMG, foodIngredients);
             }}
             className="w-[40%] ml-[55%]"
           >

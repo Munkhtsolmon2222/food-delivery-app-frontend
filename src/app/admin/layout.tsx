@@ -30,7 +30,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <div className="flex bg-[#F4F4F5] gap-6 relative">
+        <div className="flex bg-[#F4F4F5] gap-6 relative h-[100%]">
           <Navigation />
           <div className="mx-6 mt-6 ">
             <div className="rounded-[40px] absolute right-8 w-[40px] h-[40px] ">
@@ -43,7 +43,7 @@ export default function RootLayout({
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
             </div>
-             {children}
+            {children}
           </div>
         </div>
       </body>

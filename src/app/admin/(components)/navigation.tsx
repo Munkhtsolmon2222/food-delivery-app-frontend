@@ -1,6 +1,6 @@
 export const Navigation = () => {
   return (
-    <div className="h-[100vh] w-[10vw] bg-white">
+    <div className="h-screen w-[10vw] bg-white">
       <div className="p-8">
         <svg
           width="165"

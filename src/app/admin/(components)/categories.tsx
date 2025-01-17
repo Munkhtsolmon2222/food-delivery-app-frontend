@@ -80,10 +80,12 @@ export function Categories() {
     <div className="rounded-lg bg-white w-[80vw] mt-6 p-4">
       <h2 className="text-[22px] font-semibold">Dishes category</h2>
       <div className="mt-5">
-        <Badge variant="outline" className="mr-2">
-          {" "}
-          <h1 className="p-2 font-medium text-[16px]">All dishes</h1>
-        </Badge>
+        <Link href={`/admin/food-category`}>
+          <Badge variant="outline" className="mr-2">
+            {" "}
+            <h1 className="p-2 font-medium text-[16px]">All dishes</h1>
+          </Badge>
+        </Link>
         {categories?.map((category) => (
           <Link
             key={category._id}

@@ -36,11 +36,6 @@ export default function Page() {
   console.log(categoryData);
   return (
     <div>
-      {/* {dishData
-        ?.filter((category: any) => category.category == categoryData.category)
-        ?.map((food: any) => (
-          <Section key={food._id} category={food} />
-        ))} */}
       {categoryData._id == params.id ? (
         <Section category={categoryData} />
       ) : (
