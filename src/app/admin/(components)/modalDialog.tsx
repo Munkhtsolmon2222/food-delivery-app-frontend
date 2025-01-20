@@ -16,13 +16,15 @@ export const ModalDialog = ({ category, setDishData, paramsId, dish }: any) => {
   const [imagePreview, setImagePreview] = useState(null);
   const [foodName, setFoodName] = useState<String>();
   const [foodPrice, setFoodPrice] = useState<Number>();
-  const [foodIMG, setFoodIMG] = useState<String>();
+  const [foodIMG, setFoodIMG] = useState<any>(null);
   const [foodIngredients, setFoodIngredients] = useState<String>();
+  const [loading, setLoading] = useState<Boolean>(false);
 
-  const handleUpload = async (event: any) => {
-    if (event) {
+  const handleUpload = async (file: any) => {
+    console.log(file);
+    if (file) {
       const data = new FormData();
-      data.append("file", event);
+      data.append("file", file);
       data.append("upload_preset", "FD-app-images");
       const response = await fetch(
         `https://api.cloudinary.com/v1_1/dv7ytfkgc/upload`,
@@ -32,9 +34,12 @@ export const ModalDialog = ({ category, setDishData, paramsId, dish }: any) => {
         }
       );
       const dataJson = await response.json();
+      console.log(dataJson);
       setFoodIMG(dataJson.secure_url);
+      setLoading(!loading);
     }
   };
+  console.log(foodIMG);
   const addCategory = async (
     foodName: any,
     foodPrice: any,
@@ -64,11 +69,11 @@ export const ModalDialog = ({ category, setDishData, paramsId, dish }: any) => {
     } catch (error) {
       console.error(error);
     }
+    setImagePreview(null);
   };
 
   const handleDrop = (acceptedFiles: any) => {
     console.log(acceptedFiles[0]);
-    setFoodIMG(acceptedFiles[0].name);
     const file = acceptedFiles[0];
     console.log(file);
     if (!file) return;
@@ -77,8 +82,8 @@ export const ModalDialog = ({ category, setDishData, paramsId, dish }: any) => {
       const previewUrl: any = URL.createObjectURL(file);
       setImagePreview(previewUrl);
       console.log(previewUrl);
+      handleUpload(file);
     }
-    handleUpload(acceptedFiles);
   };
   const handleChangerFoodName = (e: any) => {
     setFoodName(e.target.value);
@@ -148,7 +153,7 @@ export const ModalDialog = ({ category, setDishData, paramsId, dish }: any) => {
                   <input {...getInputProps()} id="img" />
                   {imagePreview ? (
                     <img
-                      src={imagePreview}
+                      src={foodIMG}
                       alt="Preview"
                       className="w-full h-full object-cover rounded-md"
                     />

@@ -4,11 +4,13 @@ export function Footer() {
     <div className="mt-[50px]">
       <div className="bg-[#18181B] h-[755px] w-screen">
         <div className="bg-[#18181B] h-[60px] w-screen"></div>
-        <div className="bg-red-500 h-20 text-[32px] flex gap-9 pl-24">
-          <p>Fresh Fast Delivered</p>
-          <p>Fresh Fast Delivered</p>
-          <p>Fresh Fast Delivered</p>
-          <p>Fresh Fast Delivered</p>
+        <div className="bg-red-500 h-20 text-[32px] flex gap-9 pl-24 items-center">
+          <p className="text-white">Fresh Fast Delivered</p>
+          <p className="text-white">Fresh Fast Delivered</p>
+          <p className="text-white">Fresh Fast Delivered</p>
+          <p className="text-white">Fresh Fast Delivered</p>
+          <p className="text-white">Fresh Fast Delivered</p>{" "}
+          <p className="text-white">Fresh Fast Delivered</p>
         </div>
         <div className=" grid grid-cols-5 gap-5 mt-20 ml-16">
           <Logo />
@@ -37,8 +39,8 @@ export function Footer() {
             <div className="text-gray-500"> FOLLOW US</div>
 
             <div className="flex gap-5">
-              <img src="./Facebook.png" alt="" />
-              <img src="./Instagram.png" alt="" />
+              <img className="w-[28px] h-[28px]" src="./Facebook.png" alt="" />
+              <img className="w-[28px] h-[28px]" src="./Instagram.png" alt="" />
             </div>
           </div>
         </div>

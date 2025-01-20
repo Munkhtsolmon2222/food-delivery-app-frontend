@@ -31,7 +31,7 @@ export default function Page() {
   }, []);
   console.log(categoryData);
   return (
-    <div>
+    <div className="">
       {categoryData.map((category: any) => (
         <Section key={category._id} category={category} />
       ))}

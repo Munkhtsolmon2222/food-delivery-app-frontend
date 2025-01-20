@@ -26,11 +26,11 @@ export const Section = ({ category }: any) => {
   console.log(dishData);
 
   return (
-    <div className="bg-white mt-6 pb-4 rounded-lg ">
+    <div className="bg-white  mt-6 pb-4 rounded-lg ">
       <h1 className="p-3 text-[20px] font-semibold mx-2">
         {category?.categoryName}
       </h1>
-      <div className="flex">
+      <div className="grid grid-cols-4">
         <ModalDialog
           dish={dishData}
           setDishData={setDishData}

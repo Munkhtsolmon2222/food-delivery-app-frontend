@@ -3,8 +3,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
 import { Navigation } from "./(components)/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-import { Categories } from "./(components)/categories";
-
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -26,27 +24,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <div className="flex bg-[#F4F4F5] gap-6 relative h-[100%]">
-          <Navigation />
-          <div className="mx-6 mt-6 ">
-            <div className="rounded-[40px] absolute right-8 w-[40px] h-[40px] ">
-              <Avatar className="w-[100%] h-[100%] rounded-full">
-                <AvatarImage
-                  src="https://github.com/shadcn.png"
-                  alt="@shadcn"
-                  className="rounded-full"
-                />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
-            </div>
-            {children}
-          </div>
+    <div className="flex bg-[#F4F4F5] h-screen gap-6 relative">
+      <Navigation />
+      <div className="mx-6 mt-6 flex flex-col overflow-scroll  ">
+        <div className="rounded-[40px] absolute right-8 w-[40px] h-[40px] ">
+          <Avatar className="w-[100%] h-[100%] rounded-full">
+            <AvatarImage
+              src="https://github.com/shadcn.png"
+              alt="@shadcn"
+              className="rounded-full"
+            />
+            <AvatarFallback>CN</AvatarFallback>
+          </Avatar>
         </div>
-      </body>
-    </html>
+        {children}
+      </div>
+    </div>
   );
 }
