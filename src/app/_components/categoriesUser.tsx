@@ -9,7 +9,7 @@ interface Category {
   categoryName: string;
 }
 
-export function Categories() {
+export function Categories({ setSelectedCategory }: any) {
   const [categories, setCategories] = useState<Category[]>([]);
   const fetchData = async () => {
     try {
@@ -30,20 +30,18 @@ export function Categories() {
       <h2 className="text-[22px] text-white font-semibold">Categories</h2>
       <div className="mt-5">
         {categories?.map((category) => (
-          <Link
+          <Badge
             key={category._id}
-            href={`/admin/food-category/${category._id}`}
+            variant="outline"
+            className="mr-2 mt-2 bg-white"
+            onClick={() => {
+              setSelectedCategory(category._id);
+            }}
           >
-            <Badge
-              key={category._id}
-              variant="outline"
-              className="mr-2 mt-2 bg-white"
-            >
-              <h1 className="p-2 font-medium text-[16px]">
-                {category.categoryName}
-              </h1>
-            </Badge>
-          </Link>
+            <h1 className="p-2 font-medium text-[16px]">
+              {category.categoryName}
+            </h1>
+          </Badge>
         ))}
       </div>
     </div>

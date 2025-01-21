@@ -65,7 +65,10 @@ export const ModalDialog = ({ category, setDishData, paramsId, dish }: any) => {
       if (!response.ok) throw new Error("Failed to add dish");
 
       const data = await response.json();
-      setDishData([...dish, data.newFood]);
+      setDishData((prevCategories: any) => [
+        ...prevCategories,
+        { _id: data._id, data: data.foodName },
+      ]);
     } catch (error) {
       console.error(error);
     }

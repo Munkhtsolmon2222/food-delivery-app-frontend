@@ -2,12 +2,10 @@
 
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { DishCards } from "./card";
-import { ModalDialog } from "./modalDialog";
+import { DishCards } from "../admin/(components)/card";
 
 export const Section = ({ category }: any) => {
   const [dishData, setDishData] = useState<any[]>([]);
-  const params = useParams();
 
   const fetchDishData = async () => {
     try {
@@ -22,33 +20,23 @@ export const Section = ({ category }: any) => {
   useEffect(() => {
     fetchDishData();
   }, []);
+  console.log(category._id);
   console.log(dishData);
 
   return (
-    <div className="bg-white  mt-6 pb-4 rounded-lg ">
-      <h1 className="p-3 text-[20px] font-semibold mx-2">
+    <div className=" w-[93vw] mx-auto mt-6 pb-4 rounded-lg ">
+      <h1 className="p-3 text-white text-[20px] font-semibold mx-2">
         {category?.categoryName}
       </h1>
-      <div className="grid grid-cols-4">
-        <ModalDialog
-          category={category}
-          dish={dishData}
-          setDishData={setDishData}
-          paramsId={category?._id}
-        />
+      <div className="grid grid-cols-4 gap-4">
         {dishData
           ?.filter((dish) => dish.category == category._id)
           .map((dish: any) => (
             <div
               key={dish._id}
-              className="w-[300px] h-[250px] m-4 rounded-lg content-center text-center"
+              className=" m-4 rounded-lg content-center text-center"
             >
-              <DishCards
-                category={category}
-                setDishData={setDishData}
-                paramsId={category?._id}
-                dish={dish}
-              />
+              <DishCards dish={dish} />
             </div>
           ))}
       </div>

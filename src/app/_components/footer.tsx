@@ -9,7 +9,6 @@ export function Footer() {
           <p className="text-white">Fresh Fast Delivered</p>
           <p className="text-white">Fresh Fast Delivered</p>
           <p className="text-white">Fresh Fast Delivered</p>
-          <p className="text-white">Fresh Fast Delivered</p>{" "}
           <p className="text-white">Fresh Fast Delivered</p>
         </div>
         <div className=" grid grid-cols-5 gap-5 mt-20 ml-16">

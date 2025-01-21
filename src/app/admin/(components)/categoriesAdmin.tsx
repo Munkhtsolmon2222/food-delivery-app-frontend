@@ -66,16 +66,6 @@ export function Categories() {
     setValue(e.target.value);
   };
 
-  // const deleteCategory = async (id: any) => {
-  //   try {
-  //     await fetch(`http://localhost:4000/food-category/${id}`, {
-  //       method: "DELETE",
-  //     });
-  //   } catch (e) {
-  //     alert(e);
-  //   }
-  //   fetchData();
-  // };
   return (
     <div className="rounded-lg bg-white w-[80vw] mt-6 p-4">
       <h2 className="text-[22px] font-semibold">Dishes category</h2>
