@@ -33,6 +33,7 @@ export default function Page() {
     fetchCategoryData();
     fetchDishData();
   }, []);
+
   console.log(categoryData);
   return (
     <div>

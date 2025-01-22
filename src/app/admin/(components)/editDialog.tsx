@@ -47,6 +47,7 @@ export const EditDialog = ({ setDishData, paramsId, dish }: any) => {
   }, []);
 
   const handleUpload = async (file: any) => {
+    setLoading(true);
     if (file) {
       const data = new FormData();
       data.append("file", file);
@@ -66,6 +67,7 @@ export const EditDialog = ({ setDishData, paramsId, dish }: any) => {
         console.error("Upload failed", dataJson);
       }
     }
+    setLoading(false);
   };
 
   const editCategory = async () => {
@@ -107,12 +109,15 @@ export const EditDialog = ({ setDishData, paramsId, dish }: any) => {
         )
       );
       console.log(dish);
+      setImagePreview(!imagePreview);
+      if (newCategory) {
+        window.location.reload();
+      }
     } catch (error) {
       console.error(error);
     }
-    setImagePreview(false);
   };
-
+  console.log(dish.category);
   const deleteDish = async () => {
     setIsDeleting(true);
     try {
@@ -156,7 +161,7 @@ export const EditDialog = ({ setDishData, paramsId, dish }: any) => {
   const handleChangerFoodCategory = (e: any) => {
     setcategory(e);
   };
-
+  console.log(imagePreview);
   return (
     <Dialog>
       <DialogTrigger className="absolute bottom-4 right-4">
@@ -223,19 +228,22 @@ export const EditDialog = ({ setDishData, paramsId, dish }: any) => {
                     className="w-[300px] h-[150px] bg-[#7F7F800D] flex justify-center items-center flex-col gap-[10px] rounded-md mt-[0.2rem]"
                   >
                     <input {...getInputProps()} id="img" />
-                    {imagePreview ? (
-                      <button
+                    {foodIMG ? (
+                      <div
                         style={{ backgroundImage: `url(${foodIMG})` }}
                         className="w-full h-full object-cover rounded-md relative"
-                        onClick={() => {
-                          setImagePreview(false);
-                        }}
                       >
-                        <img
-                          className="w-[36px] h-[36px] absolute top-2 right-2"
-                          src="/imageDeletebtn.png"
-                        />
-                      </button>
+                        <button
+                          onClick={() => {
+                            setFoodIMG(false);
+                          }}
+                        >
+                          <img
+                            className="w-[36px] h-[36px] absolute top-2 right-2"
+                            src="/imageDeletebtn.png"
+                          />
+                        </button>
+                      </div>
                     ) : (
                       <div className="flex flex-col items-center">
                         <div className="w-[28px] h-[28px] bg-white flex justify-center items-center rounded-full">
@@ -272,9 +280,32 @@ export const EditDialog = ({ setDishData, paramsId, dish }: any) => {
             )}
           </DialogClose>
           <DialogClose asChild>
-            <Button onClick={editCategory} className="w-[40%]">
-              Save Changes
-            </Button>
+            {loading ? (
+              <Button
+                disabled={true}
+                className="w-[40%]"
+                style={{
+                  position: "relative",
+                  overflow: "hidden",
+                  background:
+                    "linear-gradient(90deg, #f0f0f0 25%, #ccc 50%, #f0f0f0 75%)",
+                  backgroundSize: "200% 100%",
+                  animation: "loading 1s steps(4) infinite",
+                  border: "none",
+                  padding: "10px 20px",
+                  cursor: "not-allowed",
+                  color: "black",
+                }}
+              >
+                <p style={{ animation: "loading 1s steps(4) infinite" }}>
+                  Loading...
+                </p>
+              </Button>
+            ) : (
+              <Button onClick={editCategory} className="w-[40%]">
+                Save Changes
+              </Button>
+            )}
           </DialogClose>
         </div>
       </DialogContent>
