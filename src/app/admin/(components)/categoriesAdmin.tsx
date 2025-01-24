@@ -63,6 +63,7 @@ export function Categories() {
 		} catch (error) {
 			console.error(error);
 		}
+		window.location.reload();
 	};
 
 	const handleChanger = (e: any) => {
@@ -100,7 +101,7 @@ export function Categories() {
 					>
 						<Badge
 							variant="outline"
-							className={`mr-2 mt-2 ${
+							className={`mr-2 mt-2 mb-2 ${
 								selectedCategoryId === category._id ? "border-red-500" : ""
 							}`}
 							onClick={() => handleBadgeClick(category._id)}

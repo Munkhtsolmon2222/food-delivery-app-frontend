@@ -21,25 +21,29 @@ export const ModalDialog = ({ category, setDishData, paramsId, dish }: any) => {
 	const [loading, setLoading] = useState<Boolean>(false);
 
 	const handleUpload = async (file: any) => {
-		console.log(file);
-		if (file) {
-			const data = new FormData();
-			data.append("file", file);
-			data.append("upload_preset", "FD-app-images");
-			const response = await fetch(
-				`https://api.cloudinary.com/v1_1/dv7ytfkgc/upload`,
-				{
-					method: "POST",
-					body: data,
-				}
-			);
-			const dataJson = await response.json();
-			console.log(dataJson);
-			setFoodIMG(dataJson.secure_url);
-			setLoading(!loading);
+		setLoading(true);
+		try {
+			if (file) {
+				const data = new FormData();
+				data.append("file", file);
+				data.append("upload_preset", "FD-app-images");
+				const response = await fetch(
+					`https://api.cloudinary.com/v1_1/dv7ytfkgc/upload`,
+					{
+						method: "POST",
+						body: data,
+					}
+				);
+				const dataJson = await response.json();
+				setFoodIMG(dataJson.secure_url);
+			}
+		} catch (error) {
+			console.error("Upload failed", error);
+		} finally {
+			setLoading(false);
 		}
 	};
-	console.log(foodIMG);
+
 	const addCategory = async (
 		foodName: any,
 		foodPrice: any,
@@ -65,9 +69,10 @@ export const ModalDialog = ({ category, setDishData, paramsId, dish }: any) => {
 			if (!response.ok) throw new Error("Failed to add dish");
 
 			const data = await response.json();
+
 			setDishData((prevCategories: any) => [
 				...prevCategories,
-				{ _id: data._id, data: data.foodName },
+				{ _id: data._id, data: data.foodName, image: data.foodIMG },
 			]);
 		} catch (error) {
 			console.error(error);
@@ -76,18 +81,16 @@ export const ModalDialog = ({ category, setDishData, paramsId, dish }: any) => {
 	};
 
 	const handleDrop = (acceptedFiles: any) => {
-		console.log(acceptedFiles[0]);
 		const file = acceptedFiles[0];
-		console.log(file);
 		if (!file) return;
 
 		if (file && file.type.startsWith("image/")) {
 			const previewUrl: any = URL.createObjectURL(file);
 			setImagePreview(previewUrl);
-			console.log(previewUrl);
 			handleUpload(file);
 		}
 	};
+
 	const handleChangerFoodName = (e: any) => {
 		setFoodName(e.target.value);
 	};
@@ -97,10 +100,10 @@ export const ModalDialog = ({ category, setDishData, paramsId, dish }: any) => {
 	const handleChangerFoodIngredients = (e: any) => {
 		setFoodIngredients(e.target.value);
 	};
+
 	return (
 		<Dialog>
 			<DialogTrigger>
-				{" "}
 				<div className="w-[300px] h-[250px] m-4 rounded-lg border-dashed border-[1px] border-[#EF4444] block content-center text-center">
 					<div className="content-center text-center">
 						<div className="bg-[#EF4444] rounded-full w-[36px] h-[36px] content-center m-auto">
@@ -154,9 +157,28 @@ export const ModalDialog = ({ category, setDishData, paramsId, dish }: any) => {
 									className="w-[416px] h-[180px] bg-[#7F7F800D] flex justify-center items-center flex-col gap-[10px] rounded-md mt-[0.2rem]"
 								>
 									<input {...getInputProps()} id="img" />
-									{imagePreview ? (
+									{loading ? (
+										<div className="flex flex-col items-center">
+											<div className="w-[28px] h-[28px] bg-white flex justify-center items-center rounded-full">
+												<svg
+													className="animate-spin"
+													width="10"
+													height="10"
+													viewBox="0 0 10 10"
+													fill="none"
+													xmlns="http://www.w3.org/2000/svg"
+												>
+													<path
+														d="M8.5 1.5V8.5H1.5V1.5H8.5ZM8.5 0.5H1.5C0.95 0.5 0.5 0.95 0.5 1.5V8.5C0.5 9.05 0.95 9.5 1.5 9.5H8.5C9.05 9.5 9.5 9.05 9.5 8.5V1.5C9.5 0.95 9.05 0.5 8.5 0.5ZM6.07 4.93L4.57 6.865L3.5 5.57L2 7.5H8L6.07 4.93Z"
+														fill="#202124"
+													/>
+												</svg>
+											</div>
+											<p>Uploading...</p>
+										</div>
+									) : imagePreview ? (
 										<img
-											src={foodIMG}
+											src={imagePreview}
 											alt="Preview"
 											className="w-full h-full object-cover rounded-md"
 										/>
@@ -186,12 +208,12 @@ export const ModalDialog = ({ category, setDishData, paramsId, dish }: any) => {
 				</div>
 				<DialogClose asChild>
 					<Button
-						onClick={() => {
-							addCategory(foodName, foodPrice, foodIMG, foodIngredients);
-						}}
+						onClick={() =>
+							addCategory(foodName, foodPrice, foodIMG, foodIngredients)
+						}
 						className="w-[40%] ml-[55%]"
 					>
-						Add dish
+						Save Changes
 					</Button>
 				</DialogClose>
 			</DialogContent>
